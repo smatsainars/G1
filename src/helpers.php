@@ -34,3 +34,12 @@ function get_flash(): ?string
     unset($_SESSION['flash']);
     return $message;
 }
+
+/**
+ * Stop and show "not found" (HTTP 404), e.g. for ?id=999 that does not exist.
+ */
+function not_found(string $message = 'Page not found.'): never
+{
+    http_response_code(404);
+    exit(e($message));
+}
