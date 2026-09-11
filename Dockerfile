@@ -7,3 +7,6 @@ RUN docker-php-ext-install pdo_mysql
 
 # The folder inside the container where our code lives
 WORKDIR /var/www/html
+
+# Our PHP settings (hide errors from users, log them instead)
+COPY php/app.ini /usr/local/etc/php/conf.d/app.ini
