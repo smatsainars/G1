@@ -43,6 +43,7 @@ page_header('Projects');
                     <form method="post" action="/project_delete.php"
                           onsubmit="return confirm('Delete this project and all its issues?');">
                         <input type="hidden" name="id" value="<?= (int) $project['id'] ?>">
+                        <?= csrf_field() ?>
                         <button type="submit">Delete</button>
                     </form>
                 </td>
