@@ -3,7 +3,7 @@ services:
   web:
     image: nginx:1.28-alpine
     ports:
-      - "8080:80"                 # browser opens localhost:8080
+      - "8080:80"
     volumes:
       - ./public:/var/www/html/public:ro                          # only public/, read-only
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
@@ -12,10 +12,10 @@ services:
     restart: unless-stopped
 
   app:
-    build: .                      # built from our Dockerfile
+    build: .                      
     volumes:
-      - .:/var/www/html           # code on my PC = code in the container
-    environment:                  # values come from the .env file
+      - .:/var/www/html           
+    environment:                 
       DB_HOST: db
       DB_PORT: 3306
       DB_DATABASE: ${DB_DATABASE}
@@ -34,14 +34,14 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     volumes:
-      - db_data:/var/lib/mysql    # data survives container restarts
-    healthcheck:                  # asks MySQL "are you alive?" every 5s
+      - db_data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:    #Checks every 5 secs
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
       interval: 5s
       timeout: 5s
       retries: 20
     restart: unless-stopped
-    # no "ports:" - the database is only reachable inside Docker
 
 volumes:
   db_data:
