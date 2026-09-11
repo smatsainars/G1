@@ -3,7 +3,7 @@
  * Small helper functions used by every page.
  */
 
-// Start the session once. We use it for one-time messages like "Project saved".
+// Start the session once. We use it for flash messages and the CSRF token.
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -60,4 +60,44 @@ function not_found(string $message = 'Page not found.'): never
 {
     http_response_code(404);
     exit(e($message));
+}
+
+/**
+ * CSRF protection.
+ * Each user session gets one secret random token. Every form sends it back,
+ * and the server checks it. A form on another website cannot know the token.
+ */
+function csrf_token(): string
+{
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
+/**
+ * The hidden input that every form must contain.
+ */
+function csrf_field(): string
+{
+    return '<input type="hidden" name="csrf_token" value="' . e(csrf_token()) . '">';
+}
+
+/**
+ * Stop the request if the token is missing or wrong.
+ */
+function check_csrf(): void
+{
+    $sent = $_POST['csrf_token'] ?? '';
+
+    if (!is_string($sent) || !hash_equals(csrf_token(), $sent)) {
+        http_response_code(403);
+        exit('Invalid or expired form. Go back, refresh the page and try again.');
+    }
+}
+
+// Every page includes this file, so EVERY POST request is checked automatically.
+// No page can "forget" the check.
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    check_csrf();
 }

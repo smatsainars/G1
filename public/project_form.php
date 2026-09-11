@@ -29,7 +29,7 @@ if ($id !== null) {
     $project = ['name' => $found['name'], 'description' => $found['description'] ?? ''];
 }
 
-// The form was submitted
+// The form was submitted (the CSRF token was already checked in helpers.php)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $project = [
         'name'        => clean_string($_POST, 'name'),
@@ -67,6 +67,8 @@ page_header($title);
 <h1><?= e($title) ?></h1>
 
 <form method="post" novalidate>
+    <?= csrf_field() ?>
+
     <div class="field">
         <label for="name">Name *</label>
         <input type="text" id="name" name="name" value="<?= e($project['name']) ?>">

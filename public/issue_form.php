@@ -56,7 +56,7 @@ if ($project === false) {
     not_found('Project not found.');
 }
 
-// The form was submitted
+// The form was submitted (the CSRF token was already checked in helpers.php)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $issue = [
         'title'       => clean_string($_POST, 'title'),
@@ -113,6 +113,8 @@ page_header($title);
 <h1><?= e($title) ?></h1>
 
 <form method="post" novalidate>
+    <?= csrf_field() ?>
+
     <div class="field">
         <label for="title">Title *</label>
         <input type="text" id="title" name="title" value="<?= e($issue['title']) ?>">
