@@ -12,7 +12,7 @@ so the app runs the same way on every computer.
 |---|---|
 | Written answers (Parts A–F, tasks 20–22) | [docs/Answers.pdf](docs/Answers.pdf) |
 | Practical task G1 | this README and the code |
-| Self-review | [SELF-REVIEW.md](SELF-REVIEW.md) |
+| Self-review | [docs/SELF-REVIEW.md](docs/SELF-REVIEW.md) |
 | Screenshots | [screenshots/](screenshots/) |
 
 ## Features
@@ -271,4 +271,4 @@ I used **one branch per feature** and merged each one into `main` with a Pull Re
 
 ## Known limitations
 
-No login, no automated tests. More details and next steps are in [SELF-REVIEW.md](SELF-REVIEW.md).
+More details and next steps are in [docs/SELF-REVIEW.md](docs/SELF-REVIEW.md).
